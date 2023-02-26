@@ -74,8 +74,7 @@
             "6",
             "7",
             "8",
-            "9",
-            "10"});
+            "9"});
             this.numVariables.Location = new System.Drawing.Point(217, 65);
             this.numVariables.MaxDropDownItems = 5;
             this.numVariables.Name = "numVariables";
@@ -106,8 +105,7 @@
             "6",
             "7",
             "8",
-            "9",
-            "10"});
+            "9"});
             this.numRestricciones.Location = new System.Drawing.Point(217, 92);
             this.numRestricciones.MaxDropDownItems = 5;
             this.numRestricciones.Name = "numRestricciones";

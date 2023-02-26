@@ -48,11 +48,11 @@ namespace Simplex
                 Label etiqueta = new Label();
                 if (i == numVariables - 1)
                 {
-                    etiqueta.Text = "x" + (i + 1);
+                    etiqueta.Text = "x" + generarSubindice(i + 1);
                 }
                 else
                 {
-                    etiqueta.Text = "x" + (i + 1) + "  + ";
+                    etiqueta.Text = "x" + generarSubindice(i + 1) + "  + ";
                 }
 
                 etiqueta.Location = new Point(posX + 95, posY);
@@ -98,11 +98,11 @@ namespace Simplex
                     Label etiqueta = new Label();
                     if (j == numVariables - 1)
                     {
-                        etiqueta.Text = "x" + (j + 1);
+                        etiqueta.Text = "x" + generarSubindice(j + 1);
                     }
                     else
                     {
-                        etiqueta.Text = "x" + (j + 1) + "  + ";
+                        etiqueta.Text = "x" + generarSubindice(j + 1) + "  + ";
                     }
 
                     etiqueta.Location = new Point(posX + 95, posY);
@@ -149,6 +149,16 @@ namespace Simplex
 
             Size = new Size(200, posY + 80);
         }
+
+
+        private string generarSubindice(int numero)
+        {
+            int valor = int.Parse("208" + numero, System.Globalization.NumberStyles.HexNumber);
+            string subindice = char.ConvertFromUtf32(valor).ToString();
+            return subindice;
+        }
+
+
 
         private void regresarBtn_Click(object sender, EventArgs e)
         {
@@ -303,7 +313,4 @@ namespace Simplex
             ventanaResultados.Show();
         }
     }
-
-
-
 }
