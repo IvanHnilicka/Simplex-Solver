@@ -294,42 +294,9 @@ namespace Simplex
 
         private void continuarBtn_Click(object sender, EventArgs e)
         {
-            bool solucionEncontrada = true;
+            actualizarTabla();
 
-            for (int i = 1; i < columnas - 1; i++)
-            {
-                if (Matriz[0, i] > 0)
-                {
-                    solucionEncontrada = false;
-                }    
-            }
-
-            if(solucionEncontrada == true)
-            {
-                labelMovimientos.Text = "El problema tiene solución óptima única x = ( , ) " +
-                    "y valor optimo z = " + Matriz[0, columnas - 1] * Matriz[0, 0];
-
-                salirBtn.Enabled = true;
-                salirBtn.Text = "Regresar";
-                salirBtn.Visible = true;
-                continuarBtn.Enabled = false;
-                continuarBtn.Visible = false;
-
-                int posicionY = labelMovimientos.Location.Y + labelMovimientos.Height;
-                Size = new Size(Width, posicionY + 80);
-
-                return;
-            }
-
-            int posX = salirBtn.Location.X;
-            int posY = salirBtn.Location.Y;
-            salirBtn.Visible = false;
-            continuarBtn.Location = new Point(posX, posY);
-
-            labelMovimientos.Visible = true;
-
-
-            // Obtenemos la tabla creada dinamicamente
+            // Obtenemos la referencia de la tabla
             DataGridView tabla = new DataGridView();
 
             foreach (Control c in Controls)
@@ -339,6 +306,109 @@ namespace Simplex
                     tabla = ((DataGridView)c);
                 }
             }
+
+            // Valida si ya se llegó a la solución
+            bool solucionEncontrada = true;
+
+            for (int i = 1; i < columnas - 1; i++)
+            {
+                // Si algun elemento de la primer fila es positivo no se ha llegado a la solución
+                if (Matriz[0, i] > 0)
+                {
+                    solucionEncontrada = false;
+                }
+            }
+
+            int altura = tabla.Location.Y + tabla.Height + 15;
+            labelMovimientos.Location = new Point(10, altura);
+
+            if (solucionEncontrada)
+            {
+                // Guarda los coeficientes de las variables de la solucion en el arreglo
+                float[] solucion = new float[numVariables];
+                for (int i = 0; i < numVariables; i++)
+                {
+                    for (int j = 0; j < filas; j++)
+                    {
+                        if (tabla.Rows[j].Cells[1].Value.ToString() == "x" + generarSubindice(i + 1))
+                        {
+                            solucion[i] = (float)tabla.Rows[j].Cells[columnas + 1].Value;
+                        }
+                    }
+                }
+
+                // Actualiza etiqueta mostrando la solucion y el valor optimo
+                labelMovimientos.Text = "El problema tiene solución óptima única   x = (";
+
+                for (int i = 0; i < solucion.Length; i++)
+                {
+                    if (i == solucion.Length - 1)
+                    {
+                        labelMovimientos.Text += solucion[i] + ") ";
+                    }
+                    else
+                    {
+                        labelMovimientos.Text += solucion[i] + ", ";
+                    }
+                }
+
+                labelMovimientos.Text += "\ny valor optimo z = " + Matriz[0, columnas - 1] * Matriz[0, 0];
+
+
+                salirBtn.Enabled = true;
+                salirBtn.Text = "Regresar";
+                salirBtn.Visible = true;
+                continuarBtn.Enabled = false;
+                continuarBtn.Visible = false;
+
+                return;
+            }
+
+
+            // Verifica que no haya soluciones infinitas
+            bool solucionesInfinitas = false;
+            string[] variablesBasicas = new string[filas - 1];
+
+            for (int i = 0; i < filas - 1; i++)
+            {
+                variablesBasicas[i] = tabla.Rows[i + 1].Cells[1].Value.ToString();
+            }
+
+
+            for (int i = 1; i < columnas - 1; i++)
+            {
+                for (int j = 0; j < variablesBasicas.Length; j++)
+                {
+                    if (Matriz[0, i] == 0 && tabla.Columns[i + 2].HeaderText != variablesBasicas[j])
+                    {
+                        solucionesInfinitas = true;
+                    }
+                }
+            }
+
+            /*
+            if (solucionesInfinitas)
+            {
+                // Actualiza etiqueta mostrando la solucion y el valor optimo
+                labelMovimientos.Text = "El problema tiene soluciones infinitas";
+                salirBtn.Enabled = true;
+                salirBtn.Text = "Regresar";
+                salirBtn.Visible = true;
+                continuarBtn.Enabled = false;
+                continuarBtn.Visible = false;
+                labelMovimientos.Visible = true;
+
+                return;
+            }
+            */
+
+
+            int posX = salirBtn.Location.X;
+            int posY = salirBtn.Location.Y;
+            salirBtn.Visible = false;
+            continuarBtn.Location = new Point(posX, posY);
+
+            labelMovimientos.Visible = true;
 
 
             // Buscamos la columna con el mayor numero
@@ -364,6 +434,8 @@ namespace Simplex
                     filaMenorCociente = i;
                 }
             }
+
+
 
 
             labelMovimientos.Text = "Entró " + tabla.Columns[columnaNumMayor + 2].HeaderText +
@@ -397,8 +469,6 @@ namespace Simplex
                     }
                 }
             }
-
-            actualizarTabla();
         }
     }
 }

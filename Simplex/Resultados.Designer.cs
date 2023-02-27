@@ -89,11 +89,12 @@
             // 
             // labelMovimientos
             // 
-            this.labelMovimientos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelMovimientos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelMovimientos.AutoSize = true;
             this.labelMovimientos.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelMovimientos.Location = new System.Drawing.Point(12, 256);
-            this.labelMovimientos.Margin = new System.Windows.Forms.Padding(3, 0, 3, 20);
+            this.labelMovimientos.Location = new System.Drawing.Point(12, 255);
+            this.labelMovimientos.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
             this.labelMovimientos.MaximumSize = new System.Drawing.Size(280, 0);
             this.labelMovimientos.Name = "labelMovimientos";
             this.labelMovimientos.Size = new System.Drawing.Size(107, 20);
