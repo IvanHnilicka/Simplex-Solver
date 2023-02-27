@@ -69,12 +69,7 @@
             this.numVariables.Items.AddRange(new object[] {
             "2",
             "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9"});
+            "4"});
             this.numVariables.Location = new System.Drawing.Point(217, 65);
             this.numVariables.MaxDropDownItems = 5;
             this.numVariables.Name = "numVariables";
@@ -100,12 +95,7 @@
             this.numRestricciones.Items.AddRange(new object[] {
             "2",
             "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9"});
+            "4"});
             this.numRestricciones.Location = new System.Drawing.Point(217, 92);
             this.numRestricciones.MaxDropDownItems = 5;
             this.numRestricciones.Name = "numRestricciones";

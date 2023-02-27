@@ -109,7 +109,6 @@ namespace Simplex
                     etiqueta.Font = fuente;
                     etiqueta.Size = new Size(42, 20);
 
-
                     // Se agregan los componentes
                     Controls.Add(inputNum);
                     Controls.Add(etiqueta);

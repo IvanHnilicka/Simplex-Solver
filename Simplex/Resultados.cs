@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Simplex
@@ -306,7 +307,7 @@ namespace Simplex
             if(solucionEncontrada == true)
             {
                 labelMovimientos.Text = "El problema tiene solución óptima única x = ( , ) " +
-                    "y valor optimo z = " + Matriz[0, columnas - 1];
+                    "y valor optimo z = " + Matriz[0, columnas - 1] * Matriz[0, 0];
 
                 salirBtn.Enabled = true;
                 salirBtn.Text = "Regresar";
@@ -314,18 +315,21 @@ namespace Simplex
                 continuarBtn.Enabled = false;
                 continuarBtn.Visible = false;
 
+                int posicionY = labelMovimientos.Location.Y + labelMovimientos.Height;
+                Size = new Size(Width, posicionY + 80);
+
                 return;
             }
 
             int posX = salirBtn.Location.X;
             int posY = salirBtn.Location.Y;
             salirBtn.Visible = false;
-            continuarBtn.Location = new System.Drawing.Point(posX, posY);
+            continuarBtn.Location = new Point(posX, posY);
 
             labelMovimientos.Visible = true;
 
 
-            // Obtenemos la tabla para poder manipuarla posteriormente
+            // Obtenemos la tabla creada dinamicamente
             DataGridView tabla = new DataGridView();
 
             foreach (Control c in Controls)
@@ -367,14 +371,17 @@ namespace Simplex
 
             tabla.Rows[filaMenorCociente].Cells[1].Value = tabla.Columns[columnaNumMayor + 2].HeaderText;
 
+
             // Si el elemento no es 1 pivoteamos
             if (Matriz[filaMenorCociente, columnaNumMayor] != 1)
             {
+                float dividendo = Matriz[filaMenorCociente, columnaNumMayor];
                 for (int i = 1; i < columnas; i++)
                 {
-                    Matriz[filaMenorCociente, i] = Matriz[filaMenorCociente, i] / Matriz[filaMenorCociente, columnaNumMayor];
+                    Matriz[filaMenorCociente, i] = (float)Math.Round((Matriz[filaMenorCociente, i] / dividendo), 2);
                 }
             }
+
 
             for (int i = 0; i < filas; i++)
             {
