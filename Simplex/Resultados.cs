@@ -286,7 +286,7 @@ namespace Simplex
             {
                 for (int j = 0; j < columnas; j++)
                 {
-                    tabla.Rows[i].Cells[j + 2].Value = Matriz[i, j];
+                    tabla.Rows[i].Cells[j + 2].Value = (float)Math.Round(Matriz[i, j], 2);
                 }
             }
         }
@@ -295,6 +295,7 @@ namespace Simplex
         private void continuarBtn_Click(object sender, EventArgs e)
         {
             actualizarTabla();
+
 
             // Obtenemos la referencia de la tabla
             DataGridView tabla = new DataGridView();
@@ -306,6 +307,57 @@ namespace Simplex
                     tabla = ((DataGridView)c);
                 }
             }
+
+
+
+            // Verifica que no haya soluciones infinitas
+            bool solucionesInfinitas = false;
+            string[] variablesBasicas = new string[filas - 1];
+
+            // Llena el arreglo con el nombre de las variables básicas
+            for (int i = 0; i < filas - 1; i++)
+            {
+                variablesBasicas[i] = tabla.Rows[i + 1].Cells[1].Value.ToString();
+            }
+
+            // Verifica que las variables no básicas no tengan valor de 0
+            for (int i = 1; i < columnas - 1; i++)
+            {
+                string variable = tabla.Columns[i + 2].HeaderText;
+                if (Matriz[0, i] == 0)
+                {
+                    for (int j = 0; j < variablesBasicas.Length; j++)
+                    {
+                        if (variablesBasicas[j] == variable)
+                        {
+                            solucionesInfinitas = false;
+                            break;
+                        }
+                        else
+                        {
+                            solucionesInfinitas = true;
+                        }
+                    }
+
+                    if(solucionesInfinitas)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (solucionesInfinitas)
+            {
+                // Actualiza etiqueta mostrando la solucion y el valor optimo
+                labelMovimientos.Text = "El problema tiene soluciones infinitas, siendo una de ellas x = (";
+                salirBtn.Enabled = true;
+                salirBtn.Text = "Regresar";
+                salirBtn.Visible = true;
+                continuarBtn.Enabled = false;
+                continuarBtn.Visible = false;
+                labelMovimientos.Visible = true;
+            }
+
 
             // Valida si ya se llegó a la solución
             bool solucionEncontrada = true;
@@ -338,7 +390,10 @@ namespace Simplex
                 }
 
                 // Actualiza etiqueta mostrando la solucion y el valor optimo
-                labelMovimientos.Text = "El problema tiene solución óptima única   x = (";
+                if (!solucionesInfinitas)
+                {
+                    labelMovimientos.Text = "El problema tiene solución óptima única   x* = (";
+                }
 
                 for (int i = 0; i < solucion.Length; i++)
                 {
@@ -352,7 +407,7 @@ namespace Simplex
                     }
                 }
 
-                labelMovimientos.Text += "\ny valor optimo z = " + Matriz[0, columnas - 1] * Matriz[0, 0];
+                labelMovimientos.Text += "\ny valor optimo z* = " + Matriz[0, columnas - 1] * Matriz[0, 0];
 
 
                 salirBtn.Enabled = true;
@@ -364,43 +419,6 @@ namespace Simplex
                 return;
             }
 
-
-            // Verifica que no haya soluciones infinitas
-            bool solucionesInfinitas = false;
-            string[] variablesBasicas = new string[filas - 1];
-
-            for (int i = 0; i < filas - 1; i++)
-            {
-                variablesBasicas[i] = tabla.Rows[i + 1].Cells[1].Value.ToString();
-            }
-
-
-            for (int i = 1; i < columnas - 1; i++)
-            {
-                for (int j = 0; j < variablesBasicas.Length; j++)
-                {
-                    if (Matriz[0, i] == 0 && tabla.Columns[i + 2].HeaderText != variablesBasicas[j])
-                    {
-                        solucionesInfinitas = true;
-                    }
-                }
-            }
-
-            /*
-            if (solucionesInfinitas)
-            {
-                // Actualiza etiqueta mostrando la solucion y el valor optimo
-                labelMovimientos.Text = "El problema tiene soluciones infinitas";
-                salirBtn.Enabled = true;
-                salirBtn.Text = "Regresar";
-                salirBtn.Visible = true;
-                continuarBtn.Enabled = false;
-                continuarBtn.Visible = false;
-                labelMovimientos.Visible = true;
-
-                return;
-            }
-            */
 
 
             int posX = salirBtn.Location.X;
@@ -436,6 +454,18 @@ namespace Simplex
             }
 
 
+            // ***************** Fix temporal para error cuando hay multiples soluciones ***************** //
+            if (filaMenorCociente == 0 && columnaNumMayor == 0)
+            {
+                salirBtn.Enabled = true;
+                salirBtn.Text = "Regresar";
+                salirBtn.Visible = true;
+                continuarBtn.Enabled = false;
+                continuarBtn.Visible = false;
+                return;
+            }
+
+
 
 
             labelMovimientos.Text = "Entró " + tabla.Columns[columnaNumMayor + 2].HeaderText +
@@ -450,7 +480,7 @@ namespace Simplex
                 float dividendo = Matriz[filaMenorCociente, columnaNumMayor];
                 for (int i = 1; i < columnas; i++)
                 {
-                    Matriz[filaMenorCociente, i] = (float)Math.Round((Matriz[filaMenorCociente, i] / dividendo), 2);
+                    Matriz[filaMenorCociente, i] = Matriz[filaMenorCociente, i] / dividendo;
                 }
             }
 
@@ -459,16 +489,19 @@ namespace Simplex
             {
                 if (i != filaMenorCociente)
                 {
-                    if (Matriz[i, columnaNumMayor] > 0 || Matriz[i, columnaNumMayor] > 0)
+                    if (Matriz[i, columnaNumMayor] > 0 || Matriz[i, columnaNumMayor] < 0)
                     {
                         float multiplicador = Matriz[i, columnaNumMayor] * -1;
                         for (int j = 1; j < columnas; j++)
                         {
-                            Matriz[i, j] += multiplicador * Matriz[filaMenorCociente, j];
+                            Matriz[i, j] += (float)Math.Round(multiplicador * Matriz[filaMenorCociente, j], 6);
                         }
                     }
                 }
             }
+
+
+            actualizarTabla();
         }
     }
 }
