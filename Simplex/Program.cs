@@ -47,18 +47,18 @@ namespace Simplex
             */
 
 
-            
+            /*
             // Sin solución
             float[,] matriz = { {1, 4,  6, 0, 0, 0 },
                                 {0, 2, -2, 1, 0, 6 },
                                 {0, 4,  0, 0, 1, 16}
             };
             Application.Run(new Resultados(2, 2, 6, 3, matriz, "Max"));
-            
+            */
 
 
             // Inicia aplicacion desde ventana Inicio
-            //Application.Run(new Inicio());
+            Application.Run(new Inicio());
         }
     }
 }
