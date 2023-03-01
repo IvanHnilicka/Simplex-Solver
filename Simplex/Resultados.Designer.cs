@@ -40,7 +40,7 @@
             // 
             this.label.AutoSize = true;
             this.label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label.Location = new System.Drawing.Point(51, 55);
+            this.label.Location = new System.Drawing.Point(51, 40);
             this.label.Name = "label";
             this.label.Size = new System.Drawing.Size(30, 20);
             this.label.TabIndex = 1;
@@ -50,7 +50,7 @@
             // 
             this.funcionLabel.AutoSize = true;
             this.funcionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.funcionLabel.Location = new System.Drawing.Point(12, 30);
+            this.funcionLabel.Location = new System.Drawing.Point(12, 15);
             this.funcionLabel.Name = "funcionLabel";
             this.funcionLabel.Size = new System.Drawing.Size(46, 20);
             this.funcionLabel.TabIndex = 0;
@@ -60,7 +60,7 @@
             // 
             this.labelRestricciones.AutoSize = true;
             this.labelRestricciones.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelRestricciones.Location = new System.Drawing.Point(108, 55);
+            this.labelRestricciones.Location = new System.Drawing.Point(108, 40);
             this.labelRestricciones.Name = "labelRestricciones";
             this.labelRestricciones.Size = new System.Drawing.Size(0, 20);
             this.labelRestricciones.TabIndex = 2;

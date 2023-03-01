@@ -492,6 +492,20 @@ namespace Simplex
                 }
             }
 
+            if(filaMenorCociente == 0)
+            {
+                labelMovimientos.Text = "El problema no tiene solución";
+                salirBtn.Enabled = true;
+                salirBtn.Text = "Regresar";
+                salirBtn.Visible = true;
+                continuarBtn.Enabled = false;
+                continuarBtn.Visible = false;
+                labelMovimientos.Visible = true;
+
+                return;
+
+            }
+
 
             // Escribe el movimiento realizado en la tabla
             labelMovimientos.Text = "Entró " + tabla.Columns[columnaNumMayor + 2].HeaderText +

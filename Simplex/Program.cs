@@ -37,15 +37,24 @@ namespace Simplex
 
 
 
-            
+            /*
             // Soluciones infinitas
             float[,] matriz = { {1, 4, 14, 0, 0, 0},
                                 {0, 2, 7, 1, 0, 21},
                                 {0, 7, 2, 0, 1, 21}
             };
             Application.Run(new Resultados(2, 2, 6, 3, matriz, "Max"));
-            
+            */
 
+
+            
+            // Sin solución
+            float[,] matriz = { {1, 4,  6, 0, 0, 0 },
+                                {0, 2, -2, 1, 0, 6 },
+                                {0, 4,  0, 0, 1, 16}
+            };
+            Application.Run(new Resultados(2, 2, 6, 3, matriz, "Max"));
+            
 
 
             // Inicia aplicacion desde ventana Inicio
