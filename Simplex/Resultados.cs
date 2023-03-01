@@ -25,8 +25,6 @@ namespace Simplex
             columnas = numColumnas;
             filas = numFilas;
 
-            //imprimirMatriz(Matriz);
-
             this.Matriz = estandarizar(Matriz, tipo);
             imprimirMatriz(this.Matriz);
             crearTabla(this.Matriz);
@@ -97,7 +95,14 @@ namespace Simplex
                 {
                     if (j != columnas - 2)
                     {
-                        labelRestricciones.Text += Matriz[i, j] + "x" + generarSubindice(j) + " + ";
+                        if (Matriz[i, j + 1] < 0)
+                        {
+                            labelRestricciones.Text += Matriz[i, j] + "x" + generarSubindice(j) + " ";
+                        }
+                        else
+                        {
+                            labelRestricciones.Text += Matriz[i, j] + "x" + generarSubindice(j) + " + ";
+                        }
 
                     }
                     else
@@ -149,6 +154,7 @@ namespace Simplex
 
         private void crearTabla(float[,] Matriz)
         {
+            // Creación y configuración de propiedades de la tabla
             DataGridView tabla = new DataGridView();
             tabla.Location = new System.Drawing.Point(12, labelRestricciones.Location.Y + labelRestricciones.Height + 25);
             tabla.Name = "tablaSimplex";
@@ -207,6 +213,7 @@ namespace Simplex
         }
 
 
+        // Crea las columnas de la tabla y les asigna el encabezado
         private DataGridViewColumn crearColumna(string nombre, string header)
         {
             DataGridViewColumn columna = new DataGridViewColumn();
@@ -254,12 +261,14 @@ namespace Simplex
         }
 
 
-
+        // Termina la aplicación si se cierra la ventana
         private void Resultados_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
         }
 
+
+        // Regresa a la ventana de inicio si se da clic al botón salir
         private void salirBtn_Click(object sender, EventArgs e)
         {
             Inicio ventanaInicio = new Inicio();
@@ -268,6 +277,7 @@ namespace Simplex
         }
 
 
+        // Actualiza los datos que se están mostrando en la tabla
         private void actualizarTabla()
         {
             // Obtenemos la referencia de la tabla
@@ -282,6 +292,7 @@ namespace Simplex
             }
 
 
+            // Asigna los datos nuevos
             for (int i = 0; i < filas; i++)
             {
                 for (int j = 0; j < columnas; j++)
@@ -292,11 +303,55 @@ namespace Simplex
         }
 
 
+        // Retorna true si el problema tiene soluciones infinitas, false en caso contrario
+        private bool solucionesInfinitas(DataGridView tabla)
+        {
+            bool solucionesInfinitas = false;
+            string[] variablesBasicas = new string[filas - 1];
+
+            // Llena el arreglo con el nombre de las variables básicas
+            for (int i = 0; i < filas - 1; i++)
+            {
+                variablesBasicas[i] = tabla.Rows[i + 1].Cells[1].Value.ToString();
+            }
+
+
+            for (int i = 1; i < columnas - 1; i++)
+            {
+                // Almacena el nombre de la variable que se va a verificar si es básica
+                string variable = tabla.Columns[i + 2].HeaderText;
+
+                if (Matriz[0, i] == 0)
+                {
+                    for (int j = 0; j < variablesBasicas.Length; j++)
+                    {
+                        // Si la variable que se esta comparando está en las básicas dejamos de comparar ya que, por ser básica, debe ser 0
+                        if (variablesBasicas[j] == variable)
+                        {
+                            solucionesInfinitas = false;
+                            break;
+                        }
+                        else
+                        {
+                            solucionesInfinitas = true;
+                        }
+                    }
+
+                    // Si no se encontraba dentro de las variables basicas y tiene valor de 0 salimos del ciclo y retornamos true
+                    if (solucionesInfinitas)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return solucionesInfinitas;
+        }
+
+
+
         private void continuarBtn_Click(object sender, EventArgs e)
         {
-            actualizarTabla();
-
-
             // Obtenemos la referencia de la tabla
             DataGridView tabla = new DataGridView();
 
@@ -309,46 +364,10 @@ namespace Simplex
             }
 
 
-
-            // Verifica que no haya soluciones infinitas
-            bool solucionesInfinitas = false;
-            string[] variablesBasicas = new string[filas - 1];
-
-            // Llena el arreglo con el nombre de las variables básicas
-            for (int i = 0; i < filas - 1; i++)
+            // Verifica que si el problema tiene soluciones infinitas
+            if (solucionesInfinitas(tabla))
             {
-                variablesBasicas[i] = tabla.Rows[i + 1].Cells[1].Value.ToString();
-            }
-
-            // Verifica que las variables no básicas no tengan valor de 0
-            for (int i = 1; i < columnas - 1; i++)
-            {
-                string variable = tabla.Columns[i + 2].HeaderText;
-                if (Matriz[0, i] == 0)
-                {
-                    for (int j = 0; j < variablesBasicas.Length; j++)
-                    {
-                        if (variablesBasicas[j] == variable)
-                        {
-                            solucionesInfinitas = false;
-                            break;
-                        }
-                        else
-                        {
-                            solucionesInfinitas = true;
-                        }
-                    }
-
-                    if(solucionesInfinitas)
-                    {
-                        break;
-                    }
-                }
-            }
-
-            if (solucionesInfinitas)
-            {
-                // Actualiza etiqueta mostrando la solucion y el valor optimo
+                // Actualiza etiqueta mostrando una solucion y el valor optimo
                 labelMovimientos.Text = "El problema tiene soluciones infinitas, siendo una de ellas x = (";
                 salirBtn.Enabled = true;
                 salirBtn.Text = "Regresar";
@@ -364,7 +383,7 @@ namespace Simplex
 
             for (int i = 1; i < columnas - 1; i++)
             {
-                // Si algun elemento de la primer fila es positivo no se ha llegado a la solución
+                // Si algun elemento de la primera fila es mayor a 0 no se ha llegado a la solución
                 if (Matriz[0, i] > 0)
                 {
                     solucionEncontrada = false;
@@ -373,6 +392,7 @@ namespace Simplex
 
             int altura = tabla.Location.Y + tabla.Height + 15;
             labelMovimientos.Location = new Point(10, altura);
+
 
             if (solucionEncontrada)
             {
@@ -389,11 +409,27 @@ namespace Simplex
                     }
                 }
 
-                // Actualiza etiqueta mostrando la solucion y el valor optimo
-                if (!solucionesInfinitas)
+                // Actualiza etiqueta si el problema tiene solución única
+                if (!solucionesInfinitas(tabla))
                 {
                     labelMovimientos.Text = "El problema tiene solución óptima única   x* = (";
                 }
+
+
+                // Escribe los coeficientes de la solución en la etiqueta
+                for (int i = 0; i < solucion.Length; i++)
+                {
+                    if (i == solucion.Length - 1)
+                    {
+                        labelMovimientos.Text += "x" + generarSubindice(i + 1) + ") = ";
+                    }
+                    else
+                    {
+                        labelMovimientos.Text += "x" + generarSubindice(i + 1) + ", ";
+                    }
+                }
+
+                labelMovimientos.Text += "(";
 
                 for (int i = 0; i < solucion.Length; i++)
                 {
@@ -407,8 +443,8 @@ namespace Simplex
                     }
                 }
 
-                labelMovimientos.Text += "\ny valor optimo z* = " + Matriz[0, columnas - 1] * Matriz[0, 0];
 
+                labelMovimientos.Text += "\ny valor optimo z* = " + Matriz[0, columnas - 1] * Matriz[0, 0];
 
                 salirBtn.Enabled = true;
                 salirBtn.Text = "Regresar";
@@ -419,8 +455,6 @@ namespace Simplex
                 return;
             }
 
-
-
             int posX = salirBtn.Location.X;
             int posY = salirBtn.Location.Y;
             salirBtn.Visible = false;
@@ -429,7 +463,9 @@ namespace Simplex
             labelMovimientos.Visible = true;
 
 
-            // Buscamos la columna con el mayor numero
+            // Si no se ha llegado a una solución realizamos la siguiente iteración
+
+            // Buscamos la columna con el número mayor
             int columnaNumMayor = 0;
             for (int i = 1; i < columnas - 1; i++)
             {
@@ -445,38 +481,30 @@ namespace Simplex
             int filaMenorCociente = 0;
             for (int i = 1; i < filas; i++)
             {
-                float cociente = Matriz[i, columnas - 1] / Matriz[i, columnaNumMayor];
-                if (cociente >= 0 && cociente <= menorCociente)
+                if (Matriz[i, columnaNumMayor] > 0)
                 {
-                    menorCociente = cociente;
-                    filaMenorCociente = i;
+                    float cociente = Matriz[i, columnas - 1] / Matriz[i, columnaNumMayor];
+                    if (cociente <= menorCociente)
+                    {
+                        menorCociente = cociente;
+                        filaMenorCociente = i;
+                    }
                 }
             }
 
 
-            // ***************** Fix temporal para error cuando hay multiples soluciones ***************** //
-            if (filaMenorCociente == 0 && columnaNumMayor == 0)
-            {
-                salirBtn.Enabled = true;
-                salirBtn.Text = "Regresar";
-                salirBtn.Visible = true;
-                continuarBtn.Enabled = false;
-                continuarBtn.Visible = false;
-                return;
-            }
-
-
-
-
+            // Escribe el movimiento realizado en la tabla
             labelMovimientos.Text = "Entró " + tabla.Columns[columnaNumMayor + 2].HeaderText +
                 ", salió " + tabla.Rows[filaMenorCociente].Cells[1].Value;
 
             tabla.Rows[filaMenorCociente].Cells[1].Value = tabla.Columns[columnaNumMayor + 2].HeaderText;
 
 
-            // Si el elemento no es 1 pivoteamos
+
+            // Si el valor no es 1 pivoteamos
             if (Matriz[filaMenorCociente, columnaNumMayor] != 1)
             {
+                // Almacenamos el número entre el que se va a realizar la división
                 float dividendo = Matriz[filaMenorCociente, columnaNumMayor];
                 for (int i = 1; i < columnas; i++)
                 {
@@ -484,13 +512,15 @@ namespace Simplex
                 }
             }
 
-
+            // Hacemos 0 los valores arriba y abajo del 1
             for (int i = 0; i < filas; i++)
             {
                 if (i != filaMenorCociente)
                 {
+                    // Si el valor no es 0 hacemos que lo sea
                     if (Matriz[i, columnaNumMayor] > 0 || Matriz[i, columnaNumMayor] < 0)
                     {
+                        // Almacenamos el número por el que se va a multiplicar la fila para despues sumarlo a la fila correspondiente
                         float multiplicador = Matriz[i, columnaNumMayor] * -1;
                         for (int j = 1; j < columnas; j++)
                         {

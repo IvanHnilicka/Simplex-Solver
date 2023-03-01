@@ -33,8 +33,8 @@ namespace Simplex
                 NumericUpDown inputNum = new NumericUpDown
                 {
                     Name = "Fx" + (i + 1),
-                    Minimum = -1000,
-                    Maximum = 1000,
+                    Minimum = -100000,
+                    Maximum = 100000,
                     Size = new Size(50, 20),
                     Location = new Point(posX + 45, posY),
                     DecimalPlaces = 2,
@@ -107,7 +107,8 @@ namespace Simplex
 
                     etiqueta.Location = new Point(posX + 95, posY);
                     etiqueta.Font = fuente;
-                    etiqueta.Size = new Size(42, 20);
+                    etiqueta.AutoSize = true;
+                    // etiqueta.Size = new Size(40, 20);
 
                     // Se agregan los componentes
                     Controls.Add(inputNum);
@@ -118,23 +119,21 @@ namespace Simplex
                 }
 
                 // Creación de ComboBox para relaciones
-                ComboBox relacion = new ComboBox();
+                Label relacion = new Label();
                 relacion.Name = "Relacion" + (i + 1);
-                relacion.DropDownStyle = ComboBoxStyle.DropDownList;
-                relacion.Items.Insert(0, "<=");
-                relacion.Items.Insert(1, ">=");
-                relacion.Size = new Size(40, 20);
-                relacion.Location = new Point(posX + 42, posY);
+                relacion.Text = "<=";
+                relacion.Size = new Size(20, 20);
+                relacion.Location = new Point(posX + 20, posY + 3);
 
 
                 //Creacion de input numerico para resultado de la relacion
                 NumericUpDown inputResultado = new NumericUpDown
                 {
                     Name = "Resultado" + (i + 1),
-                    Minimum = -1000,
+                    Minimum = 0,
                     Maximum = 1000,
                     Size = new Size(50, 20),
-                    Location = new Point(posX + 98, posY),
+                    Location = new Point(posX + 40, posY),
                     DecimalPlaces = 2,
                 };
 
@@ -146,10 +145,35 @@ namespace Simplex
                 posY = posY + 30;
             }
 
+
+            Label naturaleza = new Label();
+            for (int i = 0; i < numVariables; i++)
+            {
+                if (i != numVariables - 1)
+                {
+                    naturaleza.Text += "x" + generarSubindice(i + 1) + ", ";
+                }
+                else
+                {
+                    naturaleza.Text += "x" + generarSubindice(i + 1);
+                }
+            }
+
+            naturaleza.Text += " >= 0";
+            naturaleza.Name = "Naturaleza";
+            Font fuenteNaturaleza = new Font("Microsoft Sans Serif", 12);
+            naturaleza.Font = fuenteNaturaleza;
+            naturaleza.MinimumSize = new Size(0, 40);
+            naturaleza.AutoSize = true;
+            naturaleza.Location = new Point(posX + 42, posY);
+            Controls.Add(naturaleza);
+
+            posY = naturaleza.Location.Y + naturaleza.Height;
             Size = new Size(200, posY + 80);
         }
 
 
+        // Retorna como subindicer el numero dado
         private string generarSubindice(int numero)
         {
             int valor = int.Parse("208" + numero, System.Globalization.NumberStyles.HexNumber);
@@ -158,7 +182,7 @@ namespace Simplex
         }
 
 
-
+        // Si da clic al boton regresar mostramos la ventana de inicio
         private void regresarBtn_Click(object sender, EventArgs e)
         {
             Inicio ventanaInicio = new Inicio(numVariables, numRestricciones);
@@ -166,6 +190,8 @@ namespace Simplex
             ventanaInicio.Show();
         }
 
+
+        // Si se cierra la ventana se termina la aplicación
         private void Ingreso_de_datos_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
@@ -206,6 +232,8 @@ namespace Simplex
             return list.ToArray();
         }
 
+
+        // Crea un arreglo con los valores del lado derecho de las restricciones
         private float[] getResultadosRestricciones()
         {
             float[] resultados = new float[numRestricciones];
@@ -223,15 +251,18 @@ namespace Simplex
             return resultados;
         }
 
-        // Crea una matriz bidimensional combinando las constantes de la funcion con las de las restricciones
+
+        // Crea una matriz bidimensional combinando los valores de la funcion con los de las restricciones
         private float[,] generarMatriz()
         {
             float[] valoresFuncion = getValoresFuncion();
             float[] valoresRestricciones = getValoresRestricciones();
             float[] resultadosRes = getResultadosRestricciones();
 
+
             // Agregamos uno para la fila de la función
-            int filas = numRestricciones + 1;   
+            int filas = numRestricciones + 1;
+
             // Se suman porque por cada restriccion se agrega una variable de holgura y sumamos 2 para la columna de z y la de resultados
             int columnas = numVariables + numRestricciones + 2;
             float[,] Matriz = new float[filas, columnas];
@@ -243,7 +274,8 @@ namespace Simplex
                 if (i == 0)
                 {
                     Matriz[0, 0] = 1;
-                }else if ( i > numVariables)
+                }
+                else if (i > numVariables)
                 {
                     Matriz[0, i] = 0;
                 }
@@ -272,12 +304,12 @@ namespace Simplex
                         Matriz[i, j] = 1;
                     }
                     // Si no estamos en la ultima columna llenamos con 0
-                    else if(j > numVariables && j != columnas - 1)
+                    else if (j > numVariables && j != columnas - 1)
                     {
                         Matriz[i, j] = 0;
                     }
                     // Si estamos en la ultima columna ponemos el valor del resultado
-                    else if(j > numVariables && j == columnas - 1)
+                    else if (j > numVariables && j == columnas - 1)
                     {
                         Matriz[i, j] = resultadosRes[i - 1];
                     }
@@ -295,6 +327,7 @@ namespace Simplex
         }
 
 
+        // Si se da clic en boton resolver mostramos ventana de resultados
         private void resolverBtn_Click(object sender, EventArgs e)
         {
             foreach (Control control in Controls)
@@ -307,6 +340,8 @@ namespace Simplex
                 }
             }
 
+
+            // Crea ventana de resultados y la muestra
             Resultados ventanaResultados = new Resultados(numVariables, numRestricciones, numVariables + numRestricciones + 2, numRestricciones + 1, generarMatriz(), comboBoxTipo.Text);
             Hide();
             ventanaResultados.Show();

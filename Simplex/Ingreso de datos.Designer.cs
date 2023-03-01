@@ -129,6 +129,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.Name = "Ingreso_de_datos";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ingreso de datos";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Ingreso_de_datos_FormClosed);
