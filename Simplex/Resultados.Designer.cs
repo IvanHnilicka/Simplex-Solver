@@ -119,7 +119,7 @@
             this.Controls.Add(this.funcionLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(10000, 1200);
+            this.MaximumSize = new System.Drawing.Size(100000, 1200);
             this.MinimumSize = new System.Drawing.Size(420, 39);
             this.Name = "Resultados";
             this.ShowIcon = false;

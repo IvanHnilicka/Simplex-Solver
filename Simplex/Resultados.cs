@@ -193,7 +193,6 @@ namespace Simplex
             tabla.RowHeadersVisible = false;
             tabla.Width = Width;
 
-
             // Creación de columnas de la tabla
             tabla.Columns.Add(crearColumna("Ecuacion", "Ec."));
             tabla.Columns.Add(crearColumna("variablesBasicas", "VB"));
@@ -343,7 +342,7 @@ namespace Simplex
             {
                 for (int j = 0; j < columnas; j++)
                 {
-                    tabla.Rows[i].Cells[j + 2].Value = (float)Math.Round(Matriz[i, j], 2);
+                    tabla.Rows[i].Cells[j + 2].Value = Matriz[i, j];
                 }
             }
         }
@@ -538,7 +537,7 @@ namespace Simplex
                 }
             }
 
-            if(filaMenorCociente == 0)
+            if (filaMenorCociente == 0)
             {
                 labelMovimientos.Text = "El problema no tiene solución";
                 salirBtn.Enabled = true;
@@ -569,6 +568,12 @@ namespace Simplex
                 for (int i = 1; i < columnas; i++)
                 {
                     Matriz[filaMenorCociente, i] = Matriz[filaMenorCociente, i] / dividendo;
+
+                    if ((Matriz[filaMenorCociente, i] < 0.09 && Matriz[filaMenorCociente, i] > 0) || Matriz[filaMenorCociente, i] < 0 && Matriz[filaMenorCociente, i] > -0.09)
+                    {
+                        Matriz[filaMenorCociente, i] = (float)Math.Round(Matriz[filaMenorCociente, i], 6);
+                    }
+                    
                 }
             }
 
@@ -578,13 +583,18 @@ namespace Simplex
                 if (i != filaMenorCociente)
                 {
                     // Si el valor no es 0 hacemos que lo sea
-                    if (Matriz[i, columnaNumMayor] > 0 || Matriz[i, columnaNumMayor] < 0)
+                    if (Matriz[i, columnaNumMayor] != 0)
                     {
                         // Almacenamos el número por el que se va a multiplicar la fila para despues sumarlo a la fila correspondiente
                         float multiplicador = Matriz[i, columnaNumMayor] * -1;
                         for (int j = 1; j < columnas; j++)
                         {
-                            Matriz[i, j] += (float)Math.Round(multiplicador * Matriz[filaMenorCociente, j], 6);
+                            Matriz[i, j] += multiplicador * Matriz[filaMenorCociente, j];
+
+                            if ((Matriz[i, j] < 0.09 && Matriz[i, j] > 0) || (Matriz[i, j] < 0 && Matriz[i, j] > -0.09))
+                            {
+                                Matriz[i, j] = (float)Math.Round(Matriz[i, j], 6);
+                            }
                         }
                     }
                 }

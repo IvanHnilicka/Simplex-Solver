@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Media;
 using System.Windows.Forms;
 
 namespace Simplex
@@ -466,7 +467,8 @@ namespace Simplex
         // Si se da clic en boton resolver mostramos ventana de resultados
         private void reiniciarBtn_Click(object sender, EventArgs e)
         {
-            DialogResult confirmacion = MessageBox.Show("Deseas eliminar los datos ingresados?", "Reiniciar datos", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            SystemSounds.Exclamation.Play();
+            DialogResult confirmacion = MessageBox.Show("Deseas eliminar los datos ingresados?", "Reiniciar datos", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
             if (confirmacion == DialogResult.Yes)
             {

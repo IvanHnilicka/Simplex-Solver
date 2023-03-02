@@ -28,6 +28,8 @@ namespace Simplex
 
             /*
             // Solución única con dos iteraciones
+            // x* = (20, 5, 0) | z* =160
+
             float[,] matriz = { {1, 7, 4, 3, 0, 0, 0 },
                                 {0, 1, 2, 2, 1, 0, 30},
                                 {0, 2, 1, 2, 0, 1, 45}
@@ -36,9 +38,23 @@ namespace Simplex
             */
 
 
+            
+            /*
+            // Solución única con dos iteraciones
+            // x* = (3, 12) | z* = 33
+            float[,] matriz = { {1, 3, 2, 0, 0, 0, 0 },
+                                {0, 2, 1, 1, 0, 0, 18},
+                                {0, 2, 3, 0, 1, 0, 42},
+                                {0, 3, 1, 0, 0, 1, 24}
+            };
+            Application.Run(new Resultados(2, 3, 7, 4, matriz, "Max"));
+            */
+
+
 
             /*
             // Soluciones infinitas
+            // x* = (0, 3) | z* = 42
             float[,] matriz = { {1, 4, 14, 0, 0, 0},
                                 {0, 2, 7, 1, 0, 21},
                                 {0, 7, 2, 0, 1, 21}
@@ -47,14 +63,15 @@ namespace Simplex
             */
 
 
-            /*
+
+            
             // Sin solución
             float[,] matriz = { {1, 4,  6, 0, 0, 0 },
                                 {0, 2, -2, 1, 0, 6 },
                                 {0, 4,  0, 0, 1, 16}
             };
             Application.Run(new Resultados(2, 2, 6, 3, matriz, "Max"));
-            */
+            
 
 
             // Inicia aplicacion desde ventana Inicio
