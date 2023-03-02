@@ -68,7 +68,7 @@
             // continuarBtn
             // 
             this.continuarBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.continuarBtn.Location = new System.Drawing.Point(202, 256);
+            this.continuarBtn.Location = new System.Drawing.Point(218, 258);
             this.continuarBtn.Name = "continuarBtn";
             this.continuarBtn.Size = new System.Drawing.Size(92, 22);
             this.continuarBtn.TabIndex = 7;
@@ -79,7 +79,7 @@
             // salirBtn
             // 
             this.salirBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.salirBtn.Location = new System.Drawing.Point(300, 256);
+            this.salirBtn.Location = new System.Drawing.Point(316, 258);
             this.salirBtn.Name = "salirBtn";
             this.salirBtn.Size = new System.Drawing.Size(92, 22);
             this.salirBtn.TabIndex = 8;
@@ -89,17 +89,19 @@
             // 
             // labelMovimientos
             // 
-            this.labelMovimientos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.labelMovimientos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelMovimientos.AutoSize = true;
             this.labelMovimientos.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelMovimientos.Location = new System.Drawing.Point(12, 255);
             this.labelMovimientos.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
-            this.labelMovimientos.MaximumSize = new System.Drawing.Size(280, 0);
+            this.labelMovimientos.MaximumSize = new System.Drawing.Size(310, 500);
             this.labelMovimientos.Name = "labelMovimientos";
             this.labelMovimientos.Size = new System.Drawing.Size(107, 20);
             this.labelMovimientos.TabIndex = 9;
             this.labelMovimientos.Text = "Entra x, sale y";
+            this.labelMovimientos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.labelMovimientos.Visible = false;
             // 
             // Resultados
@@ -108,7 +110,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(404, 290);
+            this.ClientSize = new System.Drawing.Size(420, 292);
             this.Controls.Add(this.labelMovimientos);
             this.Controls.Add(this.salirBtn);
             this.Controls.Add(this.continuarBtn);
@@ -117,6 +119,7 @@
             this.Controls.Add(this.funcionLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(10000, 1200);
             this.MinimumSize = new System.Drawing.Size(420, 39);
             this.Name = "Resultados";
             this.ShowIcon = false;

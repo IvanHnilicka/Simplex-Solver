@@ -34,6 +34,7 @@
             this.comboBoxTipo = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.reiniciarBtn = new System.Windows.Forms.Button();
             this.resolverBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -51,9 +52,9 @@
             // 
             this.regresarBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.regresarBtn.AutoSize = true;
-            this.regresarBtn.Location = new System.Drawing.Point(212, 133);
+            this.regresarBtn.Location = new System.Drawing.Point(332, 133);
             this.regresarBtn.Name = "regresarBtn";
-            this.regresarBtn.Size = new System.Drawing.Size(87, 23);
+            this.regresarBtn.Size = new System.Drawing.Size(80, 23);
             this.regresarBtn.TabIndex = 4;
             this.regresarBtn.Text = "Regresar";
             this.regresarBtn.UseVisualStyleBackColor = true;
@@ -101,25 +102,38 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "z = ";
             // 
+            // reiniciarBtn
+            // 
+            this.reiniciarBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.reiniciarBtn.AutoSize = true;
+            this.reiniciarBtn.Location = new System.Drawing.Point(247, 133);
+            this.reiniciarBtn.Name = "reiniciarBtn";
+            this.reiniciarBtn.Size = new System.Drawing.Size(80, 23);
+            this.reiniciarBtn.TabIndex = 9;
+            this.reiniciarBtn.Text = "Reiniciar";
+            this.reiniciarBtn.UseVisualStyleBackColor = true;
+            this.reiniciarBtn.Click += new System.EventHandler(this.reiniciarBtn_Click);
+            // 
             // resolverBtn
             // 
             this.resolverBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.resolverBtn.AutoSize = true;
-            this.resolverBtn.Location = new System.Drawing.Point(119, 133);
+            this.resolverBtn.Location = new System.Drawing.Point(162, 133);
             this.resolverBtn.Name = "resolverBtn";
-            this.resolverBtn.Size = new System.Drawing.Size(87, 23);
-            this.resolverBtn.TabIndex = 9;
+            this.resolverBtn.Size = new System.Drawing.Size(80, 23);
+            this.resolverBtn.TabIndex = 10;
             this.resolverBtn.Text = "Resolver";
             this.resolverBtn.UseVisualStyleBackColor = true;
-            this.resolverBtn.Click += new System.EventHandler(this.resolverBtn_Click);
+            this.resolverBtn.Click += new System.EventHandler(this.resolverBtn_Click_1);
             // 
             // Ingreso_de_datos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(301, 168);
+            this.ClientSize = new System.Drawing.Size(414, 168);
             this.Controls.Add(this.resolverBtn);
+            this.Controls.Add(this.reiniciarBtn);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.comboBoxTipo);
@@ -128,6 +142,7 @@
             this.Controls.Add(this.label2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(430, 207);
             this.Name = "Ingreso_de_datos";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -145,6 +160,7 @@
         private System.Windows.Forms.ComboBox comboBoxTipo;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button reiniciarBtn;
         private System.Windows.Forms.Button resolverBtn;
     }
 }

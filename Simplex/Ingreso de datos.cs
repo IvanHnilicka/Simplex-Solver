@@ -10,20 +10,73 @@ namespace Simplex
         int numVariables;
         int numRestricciones;
 
-        public Ingreso_de_datos()
+
+        // Crea la ventana con los datos del problema que toma como parametros
+        public Ingreso_de_datos(int variables, int restricciones, float[,] matrizInicial, string tipo)
         {
             InitializeComponent();
+
+            numVariables = variables;
+            numRestricciones = restricciones;
+
+            crearElementos();
+            comboBoxTipo.Text = tipo;
+
+            int contadorFuncion = 1;
+            int i = 1;
+            int j = 1;
+            int k = 1;
+
+            foreach (Control c in Controls)
+            {
+                if (c is NumericUpDown && c.Name.Contains("Fx"))
+                {
+                    if (tipo == "Max")
+                    {
+                        ((NumericUpDown)c).Value = (decimal)matrizInicial[0, contadorFuncion];
+                        contadorFuncion++;
+                    }
+                    else
+                    {
+                        ((NumericUpDown)c).Value = (decimal)matrizInicial[0, contadorFuncion] * -1;
+                        contadorFuncion++;
+                    }
+                }
+                else if (c is NumericUpDown && c.Name.Contains("Rx"))
+                {
+                    if (j == numVariables + 1)
+                    {
+                        j = 1;
+                        i++;
+                    }
+
+                    ((NumericUpDown)c).Value = (decimal)matrizInicial[i, j];
+                    j++;
+                }
+                else if (c is NumericUpDown && c.Name.Contains("Resultado"))
+                {
+                    ((NumericUpDown)c).Value = (decimal)matrizInicial[k, numVariables + numRestricciones + 1];
+                    k++;
+                }
+            }
         }
 
+
+        // Crea los elementos de la ventana para que el usuario ingrese los datos
         public Ingreso_de_datos(int variables, int restricciones)
         {
             InitializeComponent();
             numVariables = variables;
             numRestricciones = restricciones;
+            crearElementos();
+        }
 
 
 
-            // Creacion de elementos para ingreso de función objetivo
+        // Agrega los elementos a la ventana
+        public void crearElementos()
+        {
+            // ***************** Creacion de elementos para ingreso de función objetivo *****************
             int posX = 120;
             int posY = 50;
 
@@ -36,9 +89,18 @@ namespace Simplex
                     Minimum = -100000,
                     Maximum = 100000,
                     Size = new Size(50, 20),
-                    Location = new Point(posX + 45, posY),
                     DecimalPlaces = 2,
                 };
+
+                // Ajusta la posicion de los inputs dependiendo del tamaño de la etiqueta
+                if (i < 10)
+                {
+                    inputNum.Location = new Point(posX + 45, posY);
+                }
+                else
+                {
+                    inputNum.Location = new Point(posX + 50, posY);
+                }
 
 
                 // Define la fuente que tendrá la etiqueta
@@ -55,9 +117,19 @@ namespace Simplex
                     etiqueta.Text = "x" + generarSubindice(i + 1) + "  + ";
                 }
 
-                etiqueta.Location = new Point(posX + 95, posY);
+
                 etiqueta.Font = fuente;
-                etiqueta.Size = new Size(42, 20);
+                etiqueta.AutoSize = true;
+
+                // Ajusta el tamaño de la etiqueta si el subindice es mayor a 10
+                if (i < 10)
+                {
+                    etiqueta.Location = new Point(posX + 95, posY);
+                }
+                else
+                {
+                    etiqueta.Location = new Point(posX + 100, posY);
+                }
 
 
                 // Se agregan los componentes
@@ -71,7 +143,7 @@ namespace Simplex
 
 
 
-            // Creación de elementos para ingreso de restricciones
+            // ***************** Creación de elementos para ingreso de restricciones *****************
             posX = 120;
             posY = 90;
 
@@ -86,9 +158,19 @@ namespace Simplex
                         Minimum = -1000,
                         Maximum = 1000,
                         Size = new Size(50, 20),
-                        Location = new Point(posX + 45, posY),
                         DecimalPlaces = 2,
                     };
+
+                    // Ajusta la posicion de los inputs dependiendo del tamaño de la etiqueta
+                    if (j < 10)
+                    {
+                        inputNum.Location = new Point(posX + 45, posY);
+                    }
+                    else
+                    {
+                        inputNum.Location = new Point(posX + 50, posY);
+                    }
+
 
 
                     // Define la fuente que tendrá la etiqueta
@@ -105,7 +187,16 @@ namespace Simplex
                         etiqueta.Text = "x" + generarSubindice(j + 1) + "  + ";
                     }
 
-                    etiqueta.Location = new Point(posX + 95, posY);
+                    // Ajusta el tamaño de la etiqueta si el subindice es mayor a 10
+                    if (j < 10)
+                    {
+                        etiqueta.Location = new Point(posX + 95, posY);
+                    }
+                    else
+                    {
+                        etiqueta.Location = new Point(posX + 100, posY);
+                    }
+
                     etiqueta.Font = fuente;
                     etiqueta.AutoSize = true;
                     // etiqueta.Size = new Size(40, 20);
@@ -118,12 +209,20 @@ namespace Simplex
                     posX = etiqueta.Location.X;
                 }
 
-                // Creación de ComboBox para relaciones
+                // Creación de etiqueta para relaciones
                 Label relacion = new Label();
                 relacion.Name = "Relacion" + (i + 1);
                 relacion.Text = "<=";
                 relacion.Size = new Size(20, 20);
-                relacion.Location = new Point(posX + 20, posY + 3);
+
+                if (numVariables < 10)
+                {
+                    relacion.Location = new Point(posX + 20, posY + 3);
+                }
+                else
+                {
+                    relacion.Location = new Point(posX + 25, posY + 3);
+                }
 
 
                 //Creacion de input numerico para resultado de la relacion
@@ -133,9 +232,18 @@ namespace Simplex
                     Minimum = 0,
                     Maximum = 1000,
                     Size = new Size(50, 20),
-                    Location = new Point(posX + 40, posY),
                     DecimalPlaces = 2,
                 };
+
+                // Ajusta la posicion de los inputs dependiendo del tamaño de la etiqueta
+                if (i < 10)
+                {
+                    inputResultado.Location = new Point(posX + 45, posY);
+                }
+                else
+                {
+                    inputResultado.Location = new Point(posX + 50, posY);
+                }
 
                 Controls.Add(relacion);
                 Controls.Add(inputResultado);
@@ -173,12 +281,40 @@ namespace Simplex
         }
 
 
-        // Retorna como subindicer el numero dado
+        // Retorna como subindice el numero dado
         private string generarSubindice(int numero)
         {
-            int valor = int.Parse("208" + numero, System.Globalization.NumberStyles.HexNumber);
-            string subindice = char.ConvertFromUtf32(valor).ToString();
-            return subindice;
+            if (numero < 10)
+            {
+                // Crea el caracter del subindice
+                int valor = int.Parse("208" + numero, System.Globalization.NumberStyles.HexNumber);
+                string subindice = char.ConvertFromUtf32(valor).ToString();
+                return subindice;
+            }
+            else if (numero % 10 == 0)
+            {
+                // Almacenamos el numero correspondiente a las decenas
+                string decena = numero.ToString()[0].ToString();
+                decena = generarSubindice(int.Parse(decena));
+
+                // Le agregamos el subindice 0
+                string subindice = decena + "ₒ";
+                return subindice;
+            }
+            else
+            {
+                // Almacenamos el numero correspondiente a las unidades
+                int unidad = numero % 10;
+                // Obtenemos el subindice correspondiente a la decena
+                string decena = numero.ToString()[0].ToString();
+                decena = generarSubindice(int.Parse(decena));
+
+                // Creamos la string con el numero de la decena y le agregamos el subindice correspondiente a la unidad
+                string subindice = decena;
+                int valor = int.Parse("208" + unidad, System.Globalization.NumberStyles.HexNumber);
+                subindice += char.ConvertFromUtf32(valor).ToString();
+                return subindice;
+            }
         }
 
 
@@ -328,7 +464,26 @@ namespace Simplex
 
 
         // Si se da clic en boton resolver mostramos ventana de resultados
-        private void resolverBtn_Click(object sender, EventArgs e)
+        private void reiniciarBtn_Click(object sender, EventArgs e)
+        {
+            DialogResult confirmacion = MessageBox.Show("Deseas eliminar los datos ingresados?", "Reiniciar datos", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (confirmacion == DialogResult.Yes)
+            {
+                foreach(Control c in Controls)
+                {
+                    if(c is ComboBox)
+                    {
+                        ((ComboBox)c).SelectedItem = null;
+                    }else if(c is NumericUpDown)
+                    {
+                        ((NumericUpDown)c).Value = 0;
+                    }
+                }
+            }
+        }
+
+        private void resolverBtn_Click_1(object sender, EventArgs e)
         {
             foreach (Control control in Controls)
             {

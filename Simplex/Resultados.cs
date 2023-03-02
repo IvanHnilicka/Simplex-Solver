@@ -16,8 +16,10 @@ namespace Simplex
         int columnas;
         int filas;
         float[,] Matriz;
+        float[,] matrizInicial;
+        string tipoProblema;
 
-        public Resultados(int cantidadVariables, int cantidadRestricciones, int numColumnas, int numFilas, float[,] Matriz, string tipo)
+        public Resultados(int cantidadVariables, int cantidadRestricciones, int numColumnas, int numFilas, float[,] matrizProblema, string tipo)
         {
             InitializeComponent();
             numVariables = cantidadVariables;
@@ -25,9 +27,24 @@ namespace Simplex
             columnas = numColumnas;
             filas = numFilas;
 
-            this.Matriz = estandarizar(Matriz, tipo);
-            imprimirMatriz(this.Matriz);
-            crearTabla(this.Matriz);
+            tipoProblema = tipo;
+
+            float[,] matriz = new float[numFilas, numColumnas];
+            for (int i = 0; i < numFilas; i++)
+            {
+                for (int j = 0; j < numColumnas; j++)
+                {
+                    matriz[i, j] = matrizProblema[i, j];
+                }
+            }
+
+            matrizInicial = matriz;
+
+            Matriz = estandarizar(matrizProblema, tipo);
+            imprimirMatriz(Matriz);
+            crearTabla(Matriz);
+
+            labelMovimientos.MaximumSize = new Size(Width - 160, 500);
         }
 
 
@@ -169,8 +186,9 @@ namespace Simplex
             tabla.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             tabla.RowsDefaultCellStyle.SelectionBackColor = tabla.DefaultCellStyle.BackColor;
             tabla.DefaultCellStyle.SelectionForeColor = tabla.DefaultCellStyle.ForeColor;
-            tabla.Enabled = false;
+            //tabla.Enabled = false;
             tabla.Margin = new Padding(0, 0, 10, 50);
+            tabla.ScrollBars = ScrollBars.Vertical;
             tabla.ReadOnly = true;
             tabla.RowHeadersVisible = false;
             tabla.Width = Width;
@@ -231,9 +249,37 @@ namespace Simplex
         //Crea caracter del numero dado como un subindice
         private string generarSubindice(int numero)
         {
-            int valor = int.Parse("208" + numero, System.Globalization.NumberStyles.HexNumber);
-            string subindice = char.ConvertFromUtf32(valor).ToString();
-            return subindice;
+            if (numero < 10)
+            {
+                // Crea el caracter del subindice
+                int valor = int.Parse("208" + numero, System.Globalization.NumberStyles.HexNumber);
+                string subindice = char.ConvertFromUtf32(valor).ToString();
+                return subindice;
+            }
+            else if (numero % 10 == 0)
+            {
+                // Almacenamos el numero correspondiente a las decenas
+                string decena = numero.ToString()[0].ToString();
+                decena = generarSubindice(int.Parse(decena));
+
+                // Le agregamos el subindice 0
+                string subindice = decena + "ₒ";
+                return subindice;
+            }
+            else
+            {
+                // Almacenamos el numero correspondiente a las unidades
+                int unidad = numero % 10;
+                // Obtenemos el subindice correspondiente a la decena
+                string decena = numero.ToString()[0].ToString();
+                decena = generarSubindice(int.Parse(decena));
+
+                // Creamos la string con el numero de la decena y le agregamos el subindice correspondiente a la unidad
+                string subindice = decena;
+                int valor = int.Parse("208" + unidad, System.Globalization.NumberStyles.HexNumber);
+                subindice += char.ConvertFromUtf32(valor).ToString();
+                return subindice;
+            }
         }
 
 
@@ -268,12 +314,12 @@ namespace Simplex
         }
 
 
-        // Regresa a la ventana de inicio si se da clic al botón salir
+        // Regresa a la ventana de ingreso de datos si se da clic al botón salir
         private void salirBtn_Click(object sender, EventArgs e)
         {
-            Inicio ventanaInicio = new Inicio();
+            Ingreso_de_datos ventanaIngreso = new Ingreso_de_datos(numVariables, numRestricciones, this.matrizInicial, tipoProblema);
             Hide();
-            ventanaInicio.Show();
+            ventanaIngreso.Show();
         }
 
 
@@ -412,7 +458,7 @@ namespace Simplex
                 // Actualiza etiqueta si el problema tiene solución única
                 if (!solucionesInfinitas(tabla))
                 {
-                    labelMovimientos.Text = "El problema tiene solución óptima única   x* = (";
+                    labelMovimientos.Text = "El problema tiene solución óptima única\nx* = (";
                 }
 
 
@@ -444,7 +490,7 @@ namespace Simplex
                 }
 
 
-                labelMovimientos.Text += "\ny valor optimo z* = " + Matriz[0, columnas - 1] * Matriz[0, 0];
+                labelMovimientos.Text += "y valor optimo z* = " + Matriz[0, columnas - 1] * Matriz[0, 0];
 
                 salirBtn.Enabled = true;
                 salirBtn.Text = "Regresar";
