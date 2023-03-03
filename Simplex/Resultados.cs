@@ -316,7 +316,7 @@ namespace Simplex
         // Regresa a la ventana de ingreso de datos si se da clic al botón salir
         private void salirBtn_Click(object sender, EventArgs e)
         {
-            Ingreso_de_datos ventanaIngreso = new Ingreso_de_datos(numVariables, numRestricciones, this.matrizInicial, tipoProblema);
+            Ingreso_de_datos ventanaIngreso = new Ingreso_de_datos(numVariables, numRestricciones, matrizInicial, tipoProblema);
             Hide();
             ventanaIngreso.Show();
         }

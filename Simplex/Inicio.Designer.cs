@@ -104,6 +104,7 @@
             this.numRestricciones.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.numRestricciones.FormattingEnabled = true;
             this.numRestricciones.Items.AddRange(new object[] {
+            "1",
             "2",
             "3",
             "4",

@@ -32,16 +32,8 @@ namespace Simplex
             {
                 if (c is NumericUpDown && c.Name.Contains("Fx"))
                 {
-                    if (tipo == "Max")
-                    {
-                        ((NumericUpDown)c).Value = (decimal)matrizInicial[0, contadorFuncion];
-                        contadorFuncion++;
-                    }
-                    else
-                    {
-                        ((NumericUpDown)c).Value = (decimal)matrizInicial[0, contadorFuncion] * -1;
-                        contadorFuncion++;
-                    }
+                    ((NumericUpDown)c).Value = (decimal)matrizInicial[0, contadorFuncion];
+                    contadorFuncion++;
                 }
                 else if (c is NumericUpDown && c.Name.Contains("Rx"))
                 {
@@ -472,12 +464,13 @@ namespace Simplex
 
             if (confirmacion == DialogResult.Yes)
             {
-                foreach(Control c in Controls)
+                foreach (Control c in Controls)
                 {
-                    if(c is ComboBox)
+                    if (c is ComboBox)
                     {
                         ((ComboBox)c).SelectedItem = null;
-                    }else if(c is NumericUpDown)
+                    }
+                    else if (c is NumericUpDown)
                     {
                         ((NumericUpDown)c).Value = 0;
                     }
