@@ -68,7 +68,7 @@
             // continuarBtn
             // 
             this.continuarBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.continuarBtn.Location = new System.Drawing.Point(218, 258);
+            this.continuarBtn.Location = new System.Drawing.Point(218, 256);
             this.continuarBtn.Name = "continuarBtn";
             this.continuarBtn.Size = new System.Drawing.Size(92, 22);
             this.continuarBtn.TabIndex = 7;
@@ -79,7 +79,7 @@
             // salirBtn
             // 
             this.salirBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.salirBtn.Location = new System.Drawing.Point(316, 258);
+            this.salirBtn.Location = new System.Drawing.Point(316, 256);
             this.salirBtn.Name = "salirBtn";
             this.salirBtn.Size = new System.Drawing.Size(92, 22);
             this.salirBtn.TabIndex = 8;

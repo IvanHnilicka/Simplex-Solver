@@ -38,7 +38,7 @@ namespace Simplex
             */
 
 
-            
+
             /*
             // Solución única con dos iteraciones
             // x* = (3, 12) | z* = 33
@@ -48,6 +48,18 @@ namespace Simplex
                                 {0, 3, 1, 0, 0, 1, 24}
             };
             Application.Run(new Resultados(2, 3, 7, 4, matriz, "Max"));
+            */
+
+
+
+            /*
+            // Solución única 0
+            // x* = (0, 0) | z* = 0
+            float[,] matriz = { {1, 2, 3, 0, 0, 0 },
+                                {0, 1, 1, 1, 0, 5 },
+                                {0, 2, 1, 0, 1, 8}
+            };
+            Application.Run(new Resultados(2, 2, 6, 3, matriz, "min"));
             */
 
 

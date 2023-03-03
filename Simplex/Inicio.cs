@@ -13,10 +13,10 @@ namespace Simplex
         public Inicio(int variables, int restricciones)
         {
             InitializeComponent();
-            // Le restamos 1 ya que las opciones mostradas van desde el 2 al 10,
+            // Le restamos 2 ya que las opciones mostradas van desde el 2 al 10,
             // por lo que se omiten el 1 y el 10 al tratarse de un arreglo y comenzar a contar desde 0
             numVariables.SelectedIndex = variables - 2;     
-            numRestricciones.SelectedIndex = restricciones - 1;
+            numRestricciones.SelectedIndex = restricciones - 2;
         }
 
         private void salirBtn_Click(object sender, EventArgs e)

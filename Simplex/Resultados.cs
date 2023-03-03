@@ -397,6 +397,8 @@ namespace Simplex
 
         private void continuarBtn_Click(object sender, EventArgs e)
         {
+            labelMovimientos.Visible = true;
+
             // Obtenemos la referencia de la tabla
             DataGridView tabla = new DataGridView();
 
@@ -413,13 +415,12 @@ namespace Simplex
             if (solucionesInfinitas(tabla))
             {
                 // Actualiza etiqueta mostrando una solucion y el valor optimo
-                labelMovimientos.Text = "El problema tiene soluciones infinitas, siendo una de ellas x = (";
+                labelMovimientos.Text = "Se cumple el criterio de optimalidad\n\nEl problema tiene soluciones infinitas, siendo una de ellas x = (";
                 salirBtn.Enabled = true;
                 salirBtn.Text = "Regresar";
                 salirBtn.Visible = true;
                 continuarBtn.Enabled = false;
                 continuarBtn.Visible = false;
-                labelMovimientos.Visible = true;
             }
 
 
@@ -457,7 +458,7 @@ namespace Simplex
                 // Actualiza etiqueta si el problema tiene solución única
                 if (!solucionesInfinitas(tabla))
                 {
-                    labelMovimientos.Text = "El problema tiene solución óptima única\nx* = (";
+                    labelMovimientos.Text = "Se cumple el criterio de optimalidad\n\nEl problema tiene solución óptima única\nx* = (";
                 }
 
 
@@ -490,7 +491,6 @@ namespace Simplex
 
 
                 labelMovimientos.Text += "y valor optimo z* = " + Matriz[0, columnas - 1] * Matriz[0, 0];
-
                 salirBtn.Enabled = true;
                 salirBtn.Text = "Regresar";
                 salirBtn.Visible = true;
@@ -505,7 +505,6 @@ namespace Simplex
             salirBtn.Visible = false;
             continuarBtn.Location = new Point(posX, posY);
 
-            labelMovimientos.Visible = true;
 
 
             // Si no se ha llegado a una solución realizamos la siguiente iteración
@@ -545,7 +544,7 @@ namespace Simplex
                 salirBtn.Visible = true;
                 continuarBtn.Enabled = false;
                 continuarBtn.Visible = false;
-                labelMovimientos.Visible = true;
+
 
                 return;
 
